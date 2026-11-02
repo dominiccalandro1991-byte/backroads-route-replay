@@ -33,7 +33,7 @@ export function Composer() {
   const reset = () => { setStep(0); setText(""); setLat(""); setLng(""); setSurface(""); setImage(undefined); setStripped(false); setTrackId(undefined); setTouched(false); };
 
   const gps = () => {
-    if (!navigator.geolocation) return toast.error("GPS not available on this device");
+    if (!navigator.geolocation) { toast.error("GPS not available on this device"); return; }
     navigator.geolocation.getCurrentPosition(
       (pos) => { setLat(pos.coords.latitude.toFixed(5)); setLng(pos.coords.longitude.toFixed(5)); toast.success("Coordinates filled from GPS"); },
       () => toast.error("Couldn't get your location"),
@@ -41,7 +41,7 @@ export function Composer() {
   };
 
   const onFile = (f?: File) => {
-    if (!f || !f.type.startsWith("image/")) return toast.error("Please drop an image file");
+    if (!f || !f.type.startsWith("image/")) { toast.error("Please drop an image file"); return; }
     setImage(URL.createObjectURL(f));
     setStripped(false);
     setTimeout(() => setStripped(true), 900);

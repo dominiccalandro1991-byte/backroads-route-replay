@@ -35,8 +35,8 @@ export interface Post {
   surface: Surface;
   difficulty: Difficulty;
   distanceMi: number;
-  image?: string;
-  trackId?: string;
+  image?: string | undefined;
+  trackId?: string | undefined;
   pins: number;
   comments: { user: string; text: string }[];
 }
@@ -49,8 +49,8 @@ export interface Waypoint {
   lng: number;
   elevationFt: number;
   surface: Surface;
-  image?: string;
-  trackId?: string;
+  image?: string | undefined;
+  trackId?: string | undefined;
 }
 
 export const images = { post1, post2, banner };

@@ -76,7 +76,7 @@ export function Providers({ children }: { children: ReactNode }) {
   const toggle = useCallback(() => {
     const a = audio.current;
     if (!a) return;
-    if (!track) return play(tracks[0]);
+    if (!track) return play(tracks[0]!);
     a.paused ? a.play().catch(() => {}) : a.pause();
   }, [track, play]);
 
@@ -84,7 +84,7 @@ export function Providers({ children }: { children: ReactNode }) {
   const setVolume = (v: number) => { if (audio.current) audio.current.volume = v; setVol(v); };
   const step = (d: number) => {
     const i = track ? tracks.findIndex((t) => t.id === track.id) : -1;
-    play(tracks[(i + d + tracks.length) % tracks.length]);
+    play(tracks[(i + d + tracks.length) % tracks.length]!);
   };
 
   useEffect(() => {

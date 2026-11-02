@@ -22,14 +22,14 @@ export function PlayerBar() {
         </div>
         <div className="flex min-w-0 flex-1 items-center gap-2">
           <span className="w-10 text-right font-mono text-[11px] text-muted-foreground">{fmtTime(p.time)}</span>
-          <Slider aria-label="Seek" value={[Math.min(p.time, dur)]} max={dur || 1} step={1} onValueChange={([v]) => p.seek(v)} disabled={!p.track} />
+          <Slider aria-label="Seek" value={[Math.min(p.time, dur)]} max={dur || 1} step={1} onValueChange={([v]) => p.seek(v ?? 0)} disabled={!p.track} />
           <span className="w-10 font-mono text-[11px] text-muted-foreground">{fmtTime(dur)}</span>
         </div>
         <div className="hidden w-32 items-center gap-2 md:flex">
           <button className="tap grid place-items-center text-muted-foreground" onClick={() => p.setVolume(p.volume ? 0 : 0.8)} aria-label={p.volume ? "Mute" : "Unmute"}>
             {p.volume ? <Volume2 className="size-4" /> : <VolumeX className="size-4" />}
           </button>
-          <Slider aria-label="Volume" value={[p.volume]} max={1} step={0.01} onValueChange={([v]) => p.setVolume(v)} />
+          <Slider aria-label="Volume" value={[p.volume]} max={1} step={0.01} onValueChange={([v]) => p.setVolume(v ?? 0)} />
         </div>
       </div>
     </div>

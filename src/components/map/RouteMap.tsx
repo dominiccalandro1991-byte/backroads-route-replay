@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import maplibregl from "maplibre-gl";
+import * as maplibregl from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Waypoint } from "@/lib/data";
@@ -40,16 +40,16 @@ export default function RouteMap({ points, onSelect }: { points: Waypoint[]; onS
           "circle-stroke-width": 3, "circle-stroke-color": "#020617",
         },
       });
-      map.on("click", "clusters", async (e) => {
+      map.on("click", "clusters", async (e: maplibregl.MapLayerMouseEvent) => {
         const f = e.features?.[0];
         if (!f) return;
         const src = map.getSource("wp") as maplibregl.GeoJSONSource;
         const z = await src.getClusterExpansionZoom(f.properties.cluster_id);
-        map.easeTo({ center: (f.geometry as GeoJSON.Point).coordinates as [number, number], zoom: z });
+        map.easeTo({ center: (f.geometry as unknown as { coordinates: [number, number] }).coordinates as [number, number], zoom: z });
       });
-      map.on("click", "pts", (e) => {
+      map.on("click", "pts", (e: maplibregl.MapLayerMouseEvent) => {
         const f = e.features?.[0];
-        if (f) { cb.current(f.properties.id); map.easeTo({ center: (f.geometry as GeoJSON.Point).coordinates as [number, number], zoom: Math.max(map.getZoom(), 8) }); }
+        if (f) { cb.current(f.properties.id); map.easeTo({ center: (f.geometry as unknown as { coordinates: [number, number] }).coordinates as [number, number], zoom: Math.max(map.getZoom(), 8) }); }
       });
       for (const l of ["clusters", "pts"]) {
         map.on("mouseenter", l, () => (map.getCanvas().style.cursor = "pointer"));
