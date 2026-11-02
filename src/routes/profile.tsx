@@ -7,7 +7,7 @@ import { useApp, usePlayer } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/profile")({
-  validateSearch: (s: Record<string, unknown>) => ({ u: typeof s.u === "string" ? s.u : undefined }),
+  validateSearch: (s: Record<string, unknown>) => ({ u: typeof s["u"] === "string" ? s["u"] : undefined }),
   head: () => ({
     meta: [
       { title: "Artist Profile — BackRoads" },
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/profile")({
 
 function Profile() {
   const { u } = Route.useSearch();
-  const user = userByHandle(u ?? "") ?? users[0];
+  const user = userByHandle(u ?? "") ?? users[0]!;
   const catalog = tracks.filter((t) => t.artist === user.name);
   const pinned = catalog[0];
   const p = usePlayer();
