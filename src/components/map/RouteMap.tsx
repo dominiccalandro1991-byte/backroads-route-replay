@@ -44,12 +44,12 @@ export default function RouteMap({ points, onSelect }: { points: Waypoint[]; onS
         const f = e.features?.[0];
         if (!f) return;
         const src = map.getSource("wp") as maplibregl.GeoJSONSource;
-        const z = await src.getClusterExpansionZoom(f.properties.cluster_id);
+        const z = await src.getClusterExpansionZoom(f.properties?.["cluster_id"]);
         map.easeTo({ center: (f.geometry as unknown as { coordinates: [number, number] }).coordinates as [number, number], zoom: z });
       });
       map.on("click", "pts", (e: maplibregl.MapLayerMouseEvent) => {
         const f = e.features?.[0];
-        if (f) { cb.current(f.properties.id); map.easeTo({ center: (f.geometry as unknown as { coordinates: [number, number] }).coordinates as [number, number], zoom: Math.max(map.getZoom(), 8) }); }
+        if (f) { cb.current(f.properties?.["id"]); map.easeTo({ center: (f.geometry as unknown as { coordinates: [number, number] }).coordinates as [number, number], zoom: Math.max(map.getZoom(), 8) }); }
       });
       for (const l of ["clusters", "pts"]) {
         map.on("mouseenter", l, () => (map.getCanvas().style.cursor = "pointer"));
