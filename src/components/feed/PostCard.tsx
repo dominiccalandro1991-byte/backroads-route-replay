@@ -2,7 +2,7 @@ import { useState } from "react";
 import { BadgeCheck, MapPin, MessageSquare, Music2, Pause, Play, Share2, Pin } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
-import { Link } from "@tanstack/react-router";
+import { Link, useHydrated } from "@tanstack/react-router";
 import { fmtCoord, trackById, userById, type Post } from "@/lib/data";
 import { useApp, usePlayer } from "@/lib/store";
 import { cn } from "@/lib/utils";
@@ -13,6 +13,7 @@ export function PostCard({ post }: { post: Post }) {
   const track = trackById(post.trackId);
   const { pinPost, pinned, addComment } = useApp();
   const p = usePlayer();
+  const hydrated = useHydrated();
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState("");
   const isPinned = pinned.has(post.id);
@@ -31,7 +32,7 @@ export function PostCard({ post }: { post: Post }) {
           <Link to="/profile" search={{ u: u.handle }} className="flex items-center gap-1 font-semibold hover:text-primary">
             {u.name} {u.verified && <BadgeCheck className="size-4 text-primary" aria-label="Verified" />}
           </Link>
-          <p className="text-xs text-muted-foreground">@{u.handle} · {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}</p>
+          <p className="text-xs text-muted-foreground">@{u.handle} · <span suppressHydrationWarning>{hydrated ? formatDistanceToNow(new Date(post.createdAt), { addSuffix: true }) : "\u00a0"}</span></p>
         </div>
         <SurfaceTag surface={post.surface} />
       </header>
